@@ -1782,7 +1782,7 @@
     const host = document.querySelector(`[data-table="${key}"]`);
     host.innerHTML = `
       <div class="toolbar">
-        <button class="btn btn-sm fbtn" data-filters-toggle="${key}" aria-expanded="false"><i class="ti ti-adjustments-horizontal" aria-hidden="true"></i>Filtros<span class="badge" data-fcount="${key}"></span></button>
+        <button class="link fbtn" data-filters-toggle="${key}" aria-expanded="false"><i class="ti ti-adjustments-horizontal" aria-hidden="true"></i>Filtros<span class="badge" data-fcount="${key}"></span></button>
       </div>
       <div class="filter-panel" data-fpanel="${key}" hidden></div>
       <div class="thead ${t.cols}" role="row" data-head="${key}"></div>
