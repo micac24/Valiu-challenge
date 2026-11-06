@@ -1527,6 +1527,8 @@
   const fmt = (n, d = 2) => n.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
   const esc = o => JSON.stringify(o).replace(/'/g, '&#39;');
   const dateOf = day => String(day).padStart(2, '0') + '/11/2026';
+  // Fechas de las tablas: día y mes, sin año ("17 Nov")
+  const dateShort = day => day + ' Nov';
   const acct = cur => ACCOUNTS.find(a => a.cur === cur);
 
   function pairFor(from, to) {
@@ -1654,7 +1656,7 @@
         { key: 'status', label: 'Estado', type: 'multi', options: () => ['Saldo insuficiente', 'Saldo suficiente'], get: q => coverage(q) ? 'Saldo insuficiente' : 'Saldo suficiente' },
       ],
       columns: [
-        { key: 'day', label: 'Vence', sort: q => q.day, render: q => `<span class="num">${dateOf(q.day)}</span>` },
+        { key: 'day', label: 'Vence', sort: q => q.day, render: q => `<span class="num">${dateShort(q.day)}</span>` },
         { key: 'to', label: 'Destinatario', sort: q => q.to.toLowerCase(), render: q => `<div class="cell"><div class="cell-main">${q.to}</div><div class="muted">${q.concept}</div></div>` },
         { key: 'from', label: 'Cuenta origen', sort: q => acct(q.cur).alias.toLowerCase(), render: q => `<div class="cell"><div class="cell-main">${acct(q.cur).alias}</div><div class="muted">${q.cur} ··${acct(q.cur).last4}</div></div>` },
         { key: 'amt', label: 'Monto', align: 'r', sort: q => convert(q.amt, q.cur, 'MXN'), render: q => {
@@ -1679,7 +1681,7 @@
         { key: 'bank', label: 'Banco de origen', type: 'multi', options: () => [...new Set(INCOMES.map(i => i.bank))], get: i => i.bank },
       ],
       columns: [
-        { key: 'date', label: 'Fecha', sort: i => i.day * 10000 + Number(i.time.replace(':', '')), render: i => `<div class="num"><div>${dateOf(i.day)}</div><div class="muted">${i.time}</div></div>` },
+        { key: 'date', label: 'Fecha', sort: i => i.day * 10000 + Number(i.time.replace(':', '')), render: i => `<div class="num"><div>${dateShort(i.day)}</div><div class="muted">${i.time}</div></div>` },
         { key: 'from', label: 'Ordenante', sort: i => i.from.toLowerCase(), render: i => `<div class="cell"><div class="cell-main">${i.from}</div><div class="muted">${i.bank}${i.ref || i.concept ? ' · ' + (i.ref || i.concept) : ''}</div></div>` },
         { key: 'amt', label: 'Monto', align: 'r', sort: i => convert(i.amt, i.cur, 'MXN'), render: i => `<div class="amt num pos">${i.cur} +${fmt(i.amt)}</div>` },
         { key: 'rcpt', label: '', render: i => `<button class="rcpt-btn" data-inc="${i.id}" aria-label="Ver comprobante del ingreso de ${i.from}" data-tip="Ver comprobante"><i class="ti ti-file-spreadsheet" aria-hidden="true"></i></button>` },
