@@ -1471,9 +1471,9 @@
   const ACCOUNTS = [
     { cur: 'MXN', flag: 'mx', name: 'Peso mexicano', alias: 'Operación MXN', last4: '8810', balance: 482310.55,
       details: [['Titular', HOLDER], ['CLABE', '646180 1234 5678 8810'], ['Banco', 'STP'], ['Moneda', 'MXN']] },
-    { cur: 'USD', flag: 'us', name: 'Dólar', alias: 'Proveedores China', last4: '2024', balance: 6750,
+    { cur: 'USD', flag: 'us', name: 'Dólar', alias: 'Alias USD', last4: '2024', balance: 6750,
       details: [['Titular', HOLDER], ['Número de cuenta', '8832 0011 2024'], ['ABA / Routing', '026 073 150'], ['SWIFT', 'CMFGUS33'], ['Banco', 'Community Federal Savings Bank'], ['Moneda', 'USD']] },
-    { cur: 'EUR', flag: 'eu', name: 'Euro', alias: 'Hoteles Europa', last4: '5531', balance: 12400,
+    { cur: 'EUR', flag: 'eu', name: 'Euro', alias: 'Cuenta Euros', last4: '5531', balance: 12400,
       details: [['Titular', HOLDER], ['IBAN', 'BE71 9670 4721 5531'], ['BIC', 'TRWIBEB1XXX'], ['Banco', 'Banking Circle S.A.'], ['Moneda', 'EUR']] },
   ];
   const PAYMENTS = [
@@ -1495,13 +1495,13 @@
   // Últimas operaciones (estructura de "Historial de operaciones", captura 12.25.44). Datos de ejemplo.
   const OPS = [
     { id: 1, day: 4, time: '11:05', status: 'Pactada', kind: 'Pago', pair: 'EUR/MXN', from: 'Operación MXN', fromL: '8810', to: 'Lisboa Tours Lda.', toL: '4410', amt: 1000, cur: 'EUR', rate: 20.22, other: 20220, otherCur: 'MXN', by: 'Ana P.', detail: 'Reserva 5530', folio: 'VAL-24811' },
-    { id: 2, day: 4, time: '10:40', status: 'Enviada', kind: 'Compra', pair: 'USD/MXN', from: 'Operación MXN', fromL: '8810', to: 'Proveedores China', toL: '2024', amt: 2000, cur: 'USD', rate: 18.74, other: 37480, otherCur: 'MXN', by: 'Laura M.', detail: 'Anticipo pedido 2291', folio: 'VAL-24807' },
+    { id: 2, day: 4, time: '10:40', status: 'Enviada', kind: 'Compra', pair: 'USD/MXN', from: 'Operación MXN', fromL: '8810', to: 'Alias USD', toL: '2024', amt: 2000, cur: 'USD', rate: 18.74, other: 37480, otherCur: 'MXN', by: 'Laura M.', detail: 'Anticipo pedido 2291', folio: 'VAL-24807' },
     { id: 3, day: 3, time: '17:20', status: 'En proceso', kind: 'Transferencia', from: 'Operación MXN', fromL: '8810', to: 'Cuenta Nómina B', toL: '2345', amt: 120000, cur: 'MXN', by: 'Carlos R.', detail: 'Pago de nómina quincenal', folio: 'VAL-24790' },
-    { id: 4, day: 3, time: '12:10', status: 'Enviada', kind: 'Transferencia', from: 'Proveedores China', fromL: '2024', to: 'Ningbo Tools Co.', toL: '7731', amt: 5200, cur: 'USD', by: 'Laura M.', detail: 'Factura NT-551', folio: 'VAL-24771' },
+    { id: 4, day: 3, time: '12:10', status: 'Enviada', kind: 'Transferencia', from: 'Alias USD', fromL: '2024', to: 'Ningbo Tools Co.', toL: '7731', amt: 5200, cur: 'USD', by: 'Laura M.', detail: 'Factura NT-551', folio: 'VAL-24771' },
     { id: 5, day: 2, time: '09:30', status: 'Anulada', kind: 'Transferencia', from: 'Operación MXN', fromL: '8810', to: 'Papelería Centro', toL: '3579', amt: 3400, cur: 'MXN', by: 'Carlos R.', detail: 'Duplicado', folio: 'VAL-24752' },
-    { id: 6, day: 1, time: '16:05', status: 'Enviada', kind: 'Transferencia', from: 'Hoteles Europa', fromL: '5531', to: 'Hotel Riu Plaza', toL: '8821', amt: 3100, cur: 'EUR', by: 'Ana P.', detail: 'Reserva grupo 5498', folio: 'VAL-24730' },
+    { id: 6, day: 1, time: '16:05', status: 'Enviada', kind: 'Transferencia', from: 'Cuenta Euros', fromL: '5531', to: 'Hotel Riu Plaza', toL: '8821', amt: 3100, cur: 'EUR', by: 'Ana P.', detail: 'Reserva grupo 5498', folio: 'VAL-24730' },
     { id: 7, day: 1, time: '11:40', status: 'Devuelta', kind: 'Transferencia', from: 'Operación MXN', fromL: '8810', to: 'Cuenta Destino G', toL: '1223', amt: 4500, cur: 'MXN', by: 'Carlos R.', detail: 'CLABE incorrecta', folio: 'VAL-24722' },
-    { id: 8, day: 1, time: '09:15', status: 'Cancelada', kind: 'Compra', pair: 'USD/MXN', from: 'Operación MXN', fromL: '8810', to: 'Proveedores China', toL: '2024', amt: 1500, cur: 'USD', rate: 18.81, other: 28215, otherCur: 'MXN', by: 'Laura M.', detail: 'Precio ejecutable vencido', folio: 'VAL-24715' },
+    { id: 8, day: 1, time: '09:15', status: 'Cancelada', kind: 'Compra', pair: 'USD/MXN', from: 'Operación MXN', fromL: '8810', to: 'Alias USD', toL: '2024', amt: 1500, cur: 'USD', rate: 18.81, other: 28215, otherCur: 'MXN', by: 'Laura M.', detail: 'Precio ejecutable vencido', folio: 'VAL-24715' },
   ];
   const ST_CLS = { Enviada: 'st-ok', Confirmada: 'st-info', Pactada: 'st-info', 'En proceso': 'st-warn', Anulada: 'st-bad', Cancelada: 'st-bad', Devuelta: 'st-bad' }; // Verde solo para Enviada, el estado final
   const stChip = st => `<span class="st-chip ${ST_CLS[st] || ''}"><span class="st-dot" aria-hidden="true"></span>${st}</span>`;
@@ -2748,12 +2748,12 @@
 
 
   const NOTIFS = [
-    { id: 1, icon: 'ti-alert-triangle', bg: 'var(--warn-chip)', fg: 'var(--warn-text)', text: 'Mañana vence el pago a Shenzhen Electronics (USD 7,500.00) y en Proveedores China faltan USD 750.00', when: 'Hace 5 min', go: { acctd: 'USD' } },
+    { id: 1, icon: 'ti-alert-triangle', bg: 'var(--warn-chip)', fg: 'var(--warn-text)', text: 'Mañana vence el pago a Shenzhen Electronics (USD 7,500.00) y en Alias USD faltan USD 750.00', when: 'Hace 5 min', go: { acctd: 'USD' } },
     { id: 5, icon: 'ti-clock', bg: 'var(--warn-chip)', fg: 'var(--warn-text)', text: 'El cobro de Distribuidora Norte LLC (USD 3,000.00) llega el 08/11/2026, después de tu pago del 05/11/2026', when: 'Hoy, 11:00', go: { acctd: 'USD' } },
     { id: 6, icon: 'ti-arrow-down-left', bg: 'var(--ok-bg)', fg: 'var(--ok-text)', text: 'Entraron MXN 86,400.00 de Viajes Altamar · Reserva 5521', when: 'Hoy, 09:02', go: { inc: 2 } },
     { id: 2, icon: 'ti-arrow-down-left', bg: 'var(--ok-bg)', fg: 'var(--ok-text)', text: 'Entraron MXN 250,000.00 de Comercial Roble S.A. de C.V.', when: 'Hoy, 10:24', go: { inc: 1 } },
     { id: 3, icon: 'ti-sparkles', bg: 'var(--primary-soft)', fg: 'var(--primary)', text: 'El dólar bajó 1.1% en la semana: buen momento para cubrir tus pagos en USD', when: 'Hoy, 09:00', go: { scroll: 'insights' } },
-    { id: 4, icon: 'ti-file-spreadsheet', bg: 'var(--head-bg)', fg: 'var(--muted)', text: 'Laura M. cargó 2 pagos por Excel en Proveedores China', when: 'Ayer, 18:12', go: { scroll: 'pagos' }, read: true },
+    { id: 4, icon: 'ti-file-spreadsheet', bg: 'var(--head-bg)', fg: 'var(--muted)', text: 'Laura M. cargó 2 pagos por Excel en Alias USD', when: 'Ayer, 18:12', go: { scroll: 'pagos' }, read: true },
   ];
   function renderNotifs() {
     const nx = ui(), unread = nx === 'normal' ? NOTIFS.filter(n => !n.read).length : 0;
