@@ -1293,7 +1293,7 @@
   .acct-name-err { color: var(--down); font-size: 12px; margin-top: 4px; }
 
   /* Mis cuentas: Por pagar y Disponible un poco a la izquierda, más aire antes de la acción */
-  html body .cols-acct { grid-template-columns: minmax(0, 1fr) 128px 180px 140px; }
+  html body .cols-acct { grid-template-columns: minmax(0, 1fr) 128px 216px 140px; }
   /* Detalle del día: misma estructura de tabla que el resto */
   .day-table { margin: 8px 20px 0; }
   .day-table .thead { padding: 0 12px; border-radius: 8px; border: 1px solid var(--divider); }
@@ -1317,16 +1317,20 @@
   html body .rcv-acts, html body .rcpt-acts, html body .panel-foot { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 8px; }
 
   /* Próximos pagos: el mismo aire entre monto y botón que en Mis cuentas (52 px) */
-  html body .cols-pay { grid-template-columns: 92px minmax(0, 1.3fr) minmax(0, 1fr) 160px 140px; }
+  html body .cols-pay { grid-template-columns: 92px minmax(0, 1.3fr) minmax(0, 1fr) 216px 140px; }
+  /* Chip "Cubierto · compra …": una sola línea, del ancho de su texto */
+  html body .chip-info { white-space: nowrap; width: fit-content; }
 
-  /* Resultado: Descargar comprobante centrado y Compartir debajo, como acción terciaria */
-  html body .ox-links { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-  html body .ox-links [data-ox-share] { font-weight: 400; color: var(--muted); font-size: 13px; }
+  /* Resultado: Descargar comprobante y Compartir pegados al detalle (acciones de lo de arriba), a la derecha y en una fila */
+  html body .ox-links { display: flex; flex-direction: row; justify-content: flex-end; align-items: center; gap: 24px; padding: 12px 20px; margin-top: -12px; margin-bottom: 16px; border-top: 1px solid var(--divider); border-bottom: 1px solid var(--divider); }
+  /* Volver al inicio: botón terciario (solo texto), centrado debajo de las acciones */
+  html body .ox-cta .ox-tert { justify-self: center; width: auto; min-height: 40px; }
 
   /* Comprobante de operación: Descargar centrado; Cancelar debajo, terciario y en rojo */
   html body .rcpt-acts.rcpt-acts-col { flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
   html body .rcpt-acts .btn { white-space: nowrap; }
-  html body .rcpt-cancel { color: var(--down); font-weight: 700; }
+  html body .rcpt-cancel { color: var(--down); border-color: var(--down); font-weight: 700; }
+  html body .rcpt-acts-col .btn { min-width: 220px; justify-content: center; }
 
   /* Qué entró: fecha completa, ordenante, monto y comprobante */
   html body .cols-in { grid-template-columns: 92px minmax(0, 1fr) 150px 32px; column-gap: 16px; }
@@ -1373,7 +1377,7 @@
     <section class="card" data-card="insights" aria-labelledby="t-insights">
       <div class="card-head">
         <div class="card-titles"><h2 class="card-title" id="t-insights">¿Qué te conviene hacer hoy? <i class="ti ti-bulb" aria-hidden="true" style="color:var(--primary);vertical-align:-2px"></i></h2><p class="card-sub">Según tus saldos, pagos y el tipo de cambio en vivo</p></div>
-        <div class="card-head-right"><span id="ins-status"></span><span data-controls></span><button class="tool reco-cfg-btn" data-reco-cfg aria-label="Personalizar con IA: cuéntanos cómo operas" data-tip="Personalizar con IA"><i class="ti ti-settings" aria-hidden="true"></i></button><button class="tool" data-hide-insights aria-label="Ocultar recomendaciones" title="Ocultar recomendaciones"><i class="ti ti-x"></i></button></div>
+        <div class="card-head-right"><span id="ins-status"></span><span data-controls></span><button class="tool reco-cfg-btn" data-reco-cfg aria-label="Personalizar con IA: cuéntanos cómo operas" data-tip="Personalizar con IA"><i class="ti ti-settings" aria-hidden="true"></i></button></div>
       </div>
       <div class="card-body"><div class="reco-note" id="reco-note"></div><div class="insights" id="insights"></div></div>
     </section>
@@ -1548,7 +1552,7 @@
     for (const q of dueOf(pay.cur)) { if (q.id === pay.id) break; before += q.amt; }
     return Math.max(0, pay.amt - Math.max(0, acct(pay.cur).balance + (raw ? 0 : pendingIn(pay.cur)) - before));
   }
-  const pendChip = cur => `<span class="chip chip-info">Cubierto · ${pendingOp(cur).folio} ${pendingOp(cur).status.toLowerCase()}</span>`;
+  const pendChip = cur => `<span class="chip chip-info">Cubierto · compra ${pendingOp(cur).status.toLowerCase()}</span>`;
   function coverPlan(a) {
     const short = shortOf(a);
     const src = a.cur === 'MXN' ? 'USD' : 'MXN';
@@ -1658,7 +1662,7 @@
           return `<div class="amt num">${q.cur} ${fmt(q.amt)}</div>${miss ? `<span class="chip chip-warn">Saldo insuficiente</span><div class="muted">Faltan ${q.cur} ${fmt(miss)}</div>` : coverage(q, true) ? pendChip(q.cur) : '<span class="chip chip-ok">Saldo suficiente</span>'}`;
         } },
         { key: 'act', label: '', render: q => `<div class="act">${!coverage(q) && coverage(q, true)
-          ? '<span class="muted">Se paga al confirmarse</span>'
+          ? `<span class="muted">Podrás pagar cuando se acrediten los ${q.cur}</span>`
           : coverage(q)
           ? payAction(q, `<button class="btn btn-sm btn-cover" data-op='${esc(coverPayOp(q))}' aria-label="Comprar ${q.cur} ${fmt(coverage(q))} para el pago a ${q.to}">Comprar</button>`, true)
           : payAction(q, `<button class="btn btn-sm" data-op='${esc(payOp(q))}'>Pagar</button>`, false)}</div>` },
@@ -2556,7 +2560,7 @@
         <fieldset class="cfg-q"><legend>3. ¿Cuándo compras divisas?</legend>${radio('fxt', FXT, P.fxt)}</fieldset>
         <fieldset class="cfg-q"><legend>Qué recomendaciones quieres ver</legend>${check('types', RECO_TYPES, k => P.types[k] !== false)}</fieldset>
         <div class="cfg-learn">
-          <label class="sw-row" for="cfg-learn"><span><b>Aprender de lo que haces</b><span class="cfg-sub">Si ejecutas una recomendación, verás más de ese tipo; si la descartas, menos. Apágalo para usar solo tus respuestas.</span></span>
+          <label class="sw-row" for="cfg-learn"><span><b>Aprendizaje constante</b><span class="cfg-sub">La IA aprende de cómo operas para darte recomendaciones más personalizadas. Si lo apagas, solo se guía por tu configuración.</span></span>
             <input type="checkbox" role="switch" id="cfg-learn" name="learn" class="sw" ${P.learn !== false ? 'checked' : ''}></label>
           ${Object.values(recoLearn).some(v => v.a + v.d) ? `<button type="button" class="link" data-reco-forget>Borrar lo aprendido</button>` : ''}
         </div>
@@ -2587,7 +2591,7 @@
       <div class="rcpt-head"><h2 id="rcpt-t">Comprobante</h2><button class="rcpt-x" data-rcpt-close aria-label="Cerrar comprobante"><i class="ti ti-x" aria-hidden="true"></i></button></div>
       <div class="rcpt-hero">${stChip(o.status)}<div class="rcpt-amt num" style="color:var(--text)">${o.cur} ${fmt(o.amt)}</div></div>
       <dl class="rcpt-sum">${rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>
-      <div class="rcpt-acts rcpt-acts-col"><button class="btn btn-primary" data-op='${esc({ label: 'Descargar comprobante ' + o.folio })}'><i class="ti ti-download" aria-hidden="true"></i>Descargar comprobante</button>${o.status === 'En proceso' ? `<button class="link rcpt-cancel" data-ops-cancel="${o.id}" data-rcpt-close>Cancelar operación</button>` : ''}</div>`;
+      <div class="rcpt-acts rcpt-acts-col"><button class="btn btn-primary" data-op='${esc({ label: 'Descargar comprobante ' + o.folio })}'><i class="ti ti-download" aria-hidden="true"></i>Descargar comprobante</button>${o.status === 'En proceso' ? `<button class="btn rcpt-cancel" data-ops-cancel="${o.id}" data-rcpt-close>Cancelar operación</button>` : ''}</div>`;
     if (d.showModal) { if (!d.open) d.showModal(); } else d.setAttribute('open', '');
   }
   function openIncome(id) {
@@ -3428,7 +3432,7 @@
     /* Paso 2 */
     function clockHtml(q, x) {
       return `<div class="ox-clock">
-        <div class="ox-ctop"><span class="ox-c-l"><span class="muted ox-c-k">Precio firme</span><b class="num ox-rate">${rateTxt(q.rate, x)}</b></span><span class="ox-count num" data-count aria-label="Tiempo restante">${clockTxt(q.exp - Date.now())}</span></div>
+        <div class="ox-ctop"><span class="ox-c-l"><span class="muted ox-c-k">Tipo de cambio firme</span><b class="num ox-rate">${rateTxt(q.rate, x)}</b><span class="muted ox-c-u">${x.p.quote} por 1 ${x.p.base}</span></span><span class="ox-count num" data-count aria-label="Tiempo restante">${clockTxt(q.exp - Date.now())}</span></div>
         <div class="ox-bar"><span data-bar></span></div>
         <div class="muted">Vale 2 minutos. Vence a las ${hhmmss(q.exp)}. <span class="ox-hurry"><i class="ti ti-alert-triangle" aria-hidden="true"></i>Quedan pocos segundos.</span> <button class="link demo" data-ox-skip data-fk="skip">Demo: adelantar a 0:05</button></div>
       </div>`;
@@ -3448,7 +3452,7 @@
       rows.push([`Saldo después en ${pa.alias}`, `${ox.pay} ${fmt(pa.balance - c.payAmt)}`]);
       if (!pay || d.own) rows.push([`Saldo después en ${ba.alias}`, `${ox.buy} ${fmt(ba.balance + c.buyAmt)}`]);
       const clock = !shown ? ''
-        : ox.modal ? `<div class="ox-clock expired"><div class="ox-ctop"><span><span class="muted">Precio firme</span> <s class="num ox-rate">${rateTxt(shown.rate, c.x)}</s></span><span class="ox-count num">0:00</span></div><div class="muted">Venció a las ${hhmmss(shown.exp)}. No se envió nada.</div></div>`
+        : ox.modal ? `<div class="ox-clock expired"><div class="ox-ctop"><span><span class="muted">Tipo de cambio firme</span> <s class="num ox-rate">${rateTxt(shown.rate, c.x)}</s></span><span class="ox-count num">0:00</span></div><div class="muted">Venció a las ${hhmmss(shown.exp)}. No se envió nada.</div></div>`
         : clockHtml(shown, c.x);
       return `<div class="card ox-card">
         <div class="ox-card-head"><h2 class="ox-h" tabindex="-1">Confirmar</h2>${shown ? `<span class="muted">Cotización ${shown.id}</span>` : ''}</div>
@@ -3466,7 +3470,7 @@
       const tokLeft = Math.max(0, ox.tokExp - Date.now());
       setTimeout(runTokClock, 0);
       const clock = !shown ? ''
-        : ox.modal ? `<div class="ox-clock expired"><div class="ox-ctop"><span class="ox-c-l"><span class="muted ox-c-k">Precio firme</span><s class="num ox-rate">${rateTxt(shown.rate, c.x)}</s></span><span class="ox-c-r"><span class="muted ox-c-k">Venció</span><span class="ox-count num">0:00</span></span></div><div class="muted">Venció a las ${hhmmss(shown.exp)}. No se envió nada.</div></div>`
+        : ox.modal ? `<div class="ox-clock expired"><div class="ox-ctop"><span class="ox-c-l"><span class="muted ox-c-k">Tipo de cambio firme</span><s class="num ox-rate">${rateTxt(shown.rate, c.x)}</s><span class="muted ox-c-u">${c.x.p.quote} por 1 ${c.x.p.base}</span></span><span class="ox-c-r"><span class="muted ox-c-k">Venció</span><span class="ox-count num">0:00</span></span></div><div class="muted">Venció a las ${hhmmss(shown.exp)}. No se envió nada.</div></div>`
         : clockHtml(shown, c.x);
       const line = pay ? `Vas a pagar <b class="num">${ox.buy} ${fmt(c.buyAmt)}</b> a ${escHtml(d.name)}` : `Vas a comprar <b class="num">${ox.buy} ${fmt(c.buyAmt)}</b> pagando <b class="num">${ox.pay} ${fmt(c.payAmt)}</b> desde ${escHtml(pa.alias)}`;
       return `<div class="card ox-card">
@@ -3497,7 +3501,7 @@
         ${same ? '' : `<div class="ox-delta ${d.worse ? 'worse' : ''}">${d.txt}</div>`}
         ${c.short ? `<div class="ox-note err"><i class="ti ti-alert-triangle" aria-hidden="true"></i><span>Con el precio nuevo te faltan ${ox.pay} ${fmt(c.short)} en ${acct(ox.pay).alias}. Cancela la operación y elige otra cuenta.</span></div>` : ''}
         ${clockHtml(ox.quote, x)}
-        <div class="ox-actions"><button class="link" data-ox-cancel>Cancelar operación</button>${cta}</div>
+        <div class="ox-actions"><button class="btn" data-ox-cancel>Cancelar operación</button>${cta}</div>
       </div></div>`;
     }
 
@@ -3627,7 +3631,7 @@
         ${kvHtml(rows)}
         <div class="ox-links"><button class="link" data-ox-dl data-fk="dl"><i class="ti ti-download" aria-hidden="true"></i>Descargar comprobante</button><button class="link" data-ox-share data-fk="share"><i class="ti ti-share-2" aria-hidden="true"></i>Compartir</button></div>
         ${nextHtml}
-        <div class="ox-cta">${next ? `<button class="btn btn-primary" data-ox-next="${next.id}" data-fk="next">Pagar a ${escHtml(next.to)}</button><button class="btn" data-ox-again data-fk="again">Hacer otra operación</button>` : '<button class="btn btn-primary" data-ox-again data-fk="again">Hacer otra operación</button>'}<button class="btn" data-ox-close data-fk="home">Volver al inicio</button>
+        <div class="ox-cta">${next ? `<button class="btn btn-primary" data-ox-next="${next.id}" data-fk="next">Pagar a ${escHtml(next.to)}</button><button class="btn" data-ox-again data-fk="again">Hacer otra operación</button><button class="link ox-tert" data-ox-close data-fk="home">Volver al inicio</button>` : '<button class="btn btn-primary" data-ox-again data-fk="again">Hacer otra operación</button><button class="btn" data-ox-close data-fk="home">Volver al inicio</button>'}
 </div>
       </div>`;
     }
